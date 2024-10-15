@@ -4,6 +4,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebSite {
 
@@ -32,7 +34,7 @@ public class WebSite {
         driver.findElement(Locators.cerrarNodal).click();
         Thread.sleep(4000);
     }
-    //Banner Principal
+    //Banner Principal - NO ACTIVADO
     public void visitBanner(String urlEsperada, String nombreSeccion) throws InterruptedException {
         String handlePaginaActual = driver.getWindowHandle();
         driver.findElement(Locators.bannerButton).click();
@@ -68,31 +70,43 @@ public class WebSite {
         Thread.sleep(1000);
     }
     //Parrilla
-    public void validarParrilla(String urlEsperada, String nombreSeccion) throws InterruptedException {
+    public void validarParrilla(String nombreSeccion) throws InterruptedException {
         String handlePaginaActual = driver.getWindowHandle();
-        driver.findElement(Locators.SubmitButton).click();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+        //Estructura de datos HashMap
+        Map<Integer, String> urlEsperada = new HashMap<>();
+        urlEsperada.put(1, "https://tienda.movistar.com.pe/solicitud/checkout/cobertura?service=93941103300FTTH&ref_origin=LC_MAGENTOMONO2_SOLOINTERNET_PARRILLA_300MBPS_HOGAR");
+        urlEsperada.put(2, "https://tienda.movistar.com.pe/solicitud/checkout/cobertura?service=93941103600FTTH&ref_origin=LC_MAGENTOMONO2_SOLOINTERNET_PARRILLA_600MBPS_HOGAR");
+        urlEsperada.put(3, "https://tienda.movistar.com.pe/solicitud/checkout/cobertura?service=939411031000FTTH&ref_origin=LC_MAGENTOMONO2_SOLOINTERNET_PARRILLA_1000MBPS_HOGAR");
 
-        for (String handle : driver.getWindowHandles()) {
-            if (!handle.equals(handlePaginaActual)) {
-                driver.switchTo().window(handle);
-                String urlActual = driver.getCurrentUrl();
+        //Buscando el indice
+        for (int i = 1; i < 4; i++) {
+            driver.findElement(Locators.SubmitButton(i)).click();
 
-                if (urlActual.equals(urlEsperada)) {
-                    System.out.println("URL correcta: " + urlActual + " " + nombreSeccion);
-                    System.out.println("Acceso Correcto");
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+            wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+
+            for (String handle : driver.getWindowHandles()) {
+                if (!handle.equals(handlePaginaActual)) {
+                    driver.switchTo().window(handle);
+                    String urlActual = driver.getCurrentUrl();
+                    //Validar la URL esperada
+                    String urlsEsperada = urlEsperada.get(i);
+
+                    if (urlActual.equals(urlsEsperada)) {
+                        System.out.println("URL correcta: " + urlActual + " " + nombreSeccion);
+                        System.out.println("Acceso Correcto");
+                    } else {
+                        System.err.println("¡Error! La URL no coincide: " + urlActual);
+                    }
                     driver.close(); // Cerrar la ventana actual
                     driver.switchTo().window(handlePaginaActual); // Volver a la ventana inicial
-                } else {
-                    System.err.println("¡Error! La URL no coincide: " + urlActual);
-                    driver.close(); // Cerrar la ventana actual
-                    driver.switchTo().window(handlePaginaActual); // Volver a la ventana inicial
+                    break; //salir del bucle
                 }
             }
         }
     }
+
     //Canales Exclusivos
     public void CanalesExclusivos() throws InterruptedException {
         driver.findElement(Locators.CanalesButton).click();
@@ -145,11 +159,9 @@ public class WebSite {
         return driver.findElement(Locators.confirmationMessage).getText();
     }
 
+    //VER LEGALES
     public void verLegales() throws  InterruptedException {
         driver.findElement(Locators.verTerminos).click();
         Thread.sleep(3000);
     }
-
-
-
 }

@@ -18,32 +18,30 @@ public class ExcuteTest {
         String celular = "999999999";
 
         webSite.navigateToWebsite(url);
-        //Banner Principal
-        webSite.visitBanner("https://tienda.movistar.com.pe/solicitud/checkout/cobertura?service=78164161300FTTH&ref_origin=LC_MAGENTOMONO2_SOLOINTERNET_PARRILLA_300MBPS_HOGAR", "TIENDA MOVISTAR INTERNET 79.9");
-        webSite.scrollByPixels(Locators.scrollAmount);
-        webSite.scrollByPixels(Locators.scroll1Amount);
+        //Banner Principal - NO ACTIVADO
+        //webSite.visitBanner("https://tienda.movistar.com.pe/solicitud/checkout/cobertura?service=78164161300FTTH&ref_origin=LC_MAGENTOMONO2_SOLOINTERNET_PARRILLA_300MBPS_HOGAR", "TIENDA MOVISTAR INTERNET 79.9");
 
         //Parrilla de Planes
         webSite.Acordeon();
-        webSite.validarParrilla("https://tienda.movistar.com.pe/solicitud/checkout/cobertura?service=78164161300FTTH&ref_origin=LC_MAGENTOMONO2_SOLOINTERNET_PARRILLA_300MBPS_HOGAR", "TIENDA MOVISTAR");
+        webSite.validarParrilla("PARRILLA DE PLANES");
         webSite.Acordeon();
         webSite.scrollByPixels(Locators.scroll2Amount);
         webSite.scrollByPixels(Locators.scrollAmount);
 
-        //Canales Exclusivos
-        webSite.CanalesExclusivos();
-        webSite.openTratamiento();
-        webSite.validarPoliticas("https://centrodetransparencia.movistar.com.pe/politica-local-privacidad", "CANALES EXCLUSIVOS");
-        webSite.closeModal();
-        webSite.inputFormulario(celular);
-        webSite.submitCanales();
-        String mensajeInternet = webSite.validarPedido();
-        if (mensajeInternet.equals("¡Gracias por contactarnos!")) {
-            System.out.println("Prueba exitosa: Se verificó el mensaje de confirmación INTERNET FIBRA");
-        } else {
-            System.out.println("Prueba fallida: El mensaje de confirmación no es el esperado");
-        }
-        webSite.closeModal();
+        //Canales Exclusivos - NO HABILITADO
+//        webSite.CanalesExclusivos();
+//        webSite.openTratamiento();
+//        webSite.validarPoliticas("https://centrodetransparencia.movistar.com.pe/politica-local-privacidad", "CANALES EXCLUSIVOS");
+//        webSite.closeModal();
+//        webSite.inputFormulario(celular);
+//        webSite.submitCanales();
+//        String mensajeInternet = webSite.validarPedido();
+//        if (mensajeInternet.equals("¡Gracias por contactarnos!")) {
+//            System.out.println("Prueba exitosa: Se verificó el mensaje de confirmación INTERNET FIBRA");
+//        } else {
+//            System.out.println("Prueba fallida: El mensaje de confirmación no es el esperado");
+//        }
+//        webSite.closeModal();
 
         //Términos y condiciones
         webSite.verLegales();
